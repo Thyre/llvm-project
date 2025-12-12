@@ -3071,53 +3071,53 @@ def mindirect_branch_cs_prefix : Flag<["-"], "mindirect-branch-cs-prefix">,
 
 defm xray_instrument : BoolFOption<"xray-instrument",
   LangOpts<"XRayInstrument">, DefaultFalse,
-  PosFlag<SetTrue, [], [ClangOption, CC1Option],
+  PosFlag<SetTrue, [], [ClangOption, CC1Option, FlangOption, FC1Option],
           "Generate XRay instrumentation sleds on function entry and exit">,
   NegFlag<SetFalse>>;
 
 def fxray_instruction_threshold_EQ :
   Joined<["-"], "fxray-instruction-threshold=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"Sets the minimum function size to instrument with XRay">,
   MarshallingInfoInt<CodeGenOpts<"XRayInstructionThreshold">, "200">;
 
 def fxray_always_instrument :
   Joined<["-"], "fxray-always-instrument=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"DEPRECATED: Filename defining the whitelist for imbuing the 'always instrument' XRay attribute.">,
   MarshallingInfoStringVector<LangOpts<"XRayAlwaysInstrumentFiles">>;
 def fxray_never_instrument :
   Joined<["-"], "fxray-never-instrument=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"DEPRECATED: Filename defining the whitelist for imbuing the 'never instrument' XRay attribute.">,
   MarshallingInfoStringVector<LangOpts<"XRayNeverInstrumentFiles">>;
 def fxray_attr_list :
   Joined<["-"], "fxray-attr-list=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"Filename defining the list of functions/types for imbuing XRay attributes.">,
   MarshallingInfoStringVector<LangOpts<"XRayAttrListFiles">>;
 def fxray_modes :
   Joined<["-"], "fxray-modes=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"List of modes to link in by default into XRay instrumented binaries.">;
 
 defm xray_always_emit_customevents : BoolFOption<"xray-always-emit-customevents",
   LangOpts<"XRayAlwaysEmitCustomEvents">, DefaultFalse,
-  PosFlag<SetTrue, [], [ClangOption, CC1Option],
+  PosFlag<SetTrue, [], [ClangOption, CC1Option, FlangOption, FC1Option],
           "Always emit __xray_customevent(...) calls"
           " even if the containing function is not always instrumented">,
   NegFlag<SetFalse>>;
 
 defm xray_always_emit_typedevents : BoolFOption<"xray-always-emit-typedevents",
   LangOpts<"XRayAlwaysEmitTypedEvents">, DefaultFalse,
-  PosFlag<SetTrue, [], [ClangOption, CC1Option],
+  PosFlag<SetTrue, [], [ClangOption, CC1Option, FlangOption, FC1Option],
           "Always emit __xray_typedevent(...) calls"
           " even if the containing function is not always instrumented">,
   NegFlag<SetFalse>>;
 
 defm xray_ignore_loops : BoolFOption<"xray-ignore-loops",
   CodeGenOpts<"XRayIgnoreLoops">, DefaultFalse,
-  PosFlag<SetTrue, [], [ClangOption, CC1Option],
+  PosFlag<SetTrue, [], [ClangOption, CC1Option, FlangOption, FC1Option],
           "Don't instrument functions with loops"
           " unless they also meet the minimum function size">,
   NegFlag<SetFalse>>;
@@ -3125,34 +3125,35 @@ defm xray_ignore_loops : BoolFOption<"xray-ignore-loops",
 defm xray_function_index : BoolFOption<"xray-function-index",
   CodeGenOpts<"XRayFunctionIndex">, DefaultTrue,
   PosFlag<SetTrue, [], [ClangOption]>,
-  NegFlag<SetFalse, [], [ClangOption, CC1Option],
+  NegFlag<SetFalse, [], [ClangOption, CC1Option, FlangOption, FC1Option],
           "Omit function index section at the"
           " expense of single-function patching performance">>;
 
-def fxray_link_deps : Flag<["-"], "fxray-link-deps">, Group<f_Group>,
+def fxray_link_deps : Flag<["-"], "fxray-link-deps">,
+  Group<f_Group>, Visibility<[ClangOption, FlangOption]>,
   HelpText<"Link XRay runtime library when -fxray-instrument is specified (default)">;
 def fno_xray_link_deps : Flag<["-"], "fno-xray-link-deps">, Group<f_Group>;
 
 def fxray_instrumentation_bundle :
   Joined<["-"], "fxray-instrumentation-bundle=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"Select which XRay instrumentation points to emit. Options: all, none, function-entry, function-exit, function, custom. Default is 'all'.  'function' includes both 'function-entry' and 'function-exit'.">;
 
 def fxray_function_groups :
   Joined<["-"], "fxray-function-groups=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"Only instrument 1 of N groups">,
   MarshallingInfoInt<CodeGenOpts<"XRayTotalFunctionGroups">, "1">;
 
 def fxray_selected_function_group :
   Joined<["-"], "fxray-selected-function-group=">,
-  Group<f_Group>, Visibility<[ClangOption, CC1Option]>,
+  Group<f_Group>, Visibility<[ClangOption, CC1Option, FlangOption, FC1Option]>,
   HelpText<"When using -fxray-function-groups, select which group of functions to instrument. Valid range is 0 to fxray-function-groups - 1">,
   MarshallingInfoInt<CodeGenOpts<"XRaySelectedFunctionGroup">, "0">;
 
 defm xray_shared : BoolFOption<"xray-shared",
   CodeGenOpts<"XRayShared">, DefaultFalse,
-  PosFlag<SetTrue, [], [ClangOption, CC1Option],
+  PosFlag<SetTrue, [], [ClangOption, CC1Option, FlangOption, FC1Option],
           "Enable shared library instrumentation with XRay">,
   NegFlag<SetFalse>>;
 
